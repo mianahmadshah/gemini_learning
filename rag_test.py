@@ -30,3 +30,26 @@ question_embedding_result = client.models.embed_content(
 )
 
 question_embedding = question_embedding_result.embeddings[0].values
+def cosine_similarity(a, b):
+    a = np.array(a)
+    b = np.array(b)
+
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+scores = []
+
+for embedding in document_embeddings:
+    score = cosine_similarity(question_embedding, embedding)
+    scores.append(score)
+
+
+best_index = np.argmax(scores)
+
+retrieved_document = documents[best_index]
+
+print("Question:")
+print(question)
+
+print("\nRetrieved Document:")
+print(retrieved_document)
